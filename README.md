@@ -1,91 +1,104 @@
-# base-proyect-da-python
+# Data Analytics + Python - [Alkemy-Labs](https://www.alkemy.org/)
 
+# Resume
+This project have 3 steps:
+* **Entry challenge**: [repository](https://github.com/lgramu97/data_challenge_alkemy)  
+
+* **Execution Flows (ETL)**: in this project, as a part of a development and data analytics team, we must analyze and prepare execution flows of the dataset received to obtain the comparisons and measurements required by the CNCE. Technologies: Airflow, Pandas, PostgreSQL, SQLAlchemy, Loggers, S3, Numpy. **Sprint I - Sprint II - Sprint III**.
+    * Create SQL queries using a postgresql database.  
+
+    * The data must be processed in such a way that queries can be made to two universities of the total available to carry out partial analyses. For this it will be necessary to make DAGs with Airflow that allow data to be processed with Python and SQL queries.  
+
+    * Calculate, evaluate and normalize data such as dates, names, postal codes according to standardized requirements that are specified for each group of universities, using Pandas.
+      
+ * **Big Data**: As part of a development and data analytics team, we need to analyze, report, and document the processing of the received dataset to obtain the comparisons and measurements required by the StackOverflow administrator group. Technologies: MapReduce technique, Hadoop, Pytest. **Sprint IV**.
+ 
+#
 # SPRINT I
 ##  TASK ID: OT303-13 (Scripts SQL)
-* Para leer las querys por separado separé el archivo original .sql, uno para cada universidad.
-* Carpeta sql contiene la solución a la task OT303-13.
+* Folder: /sql. 
+* Two .sql files, each one is a script for the corresponding university.
 
 ## TASK ID: OT303-21 (ETL DAGs)
-* Archivo university_etl_dag.py contiene el DAG principal, con el flujo de trabajo.
-* Archivo university_etl_functions.py contiene las funciones de cada tarea del DAG.
-* Al ejecutar el DAG se crea una carpeta csv con los archivos .csv correspondientes a la operación de 'extract' (para cada universidad).
-* Crear archivo settings.ini con la información necesaria para realizar la conexión con postgresql.
-* Carpeta sql contiene las querys de cada universidad.
-* Archivos university_etl_dag.py, university_etl_functions.py, utils.py, db_connection.py, cfg.py, common_args.py y carpeta sql componen la task OT303-21.
+* File university_etl_dag.py: main DAG, workflow.
+* File university_etl_functions.py: contains the task DAG functons.
+* Extract: when the DAG runs, it creates a folder with the csv files as result.
+* For this task, create settings.ini file with the necessary information for the postgresql connection. Example:
+  * DB_USER=user
+  * DB_PASS=pass
+  * DB_HOST=some_host
+  * DB_PORT=port_number
+  * DB_NAME=db_name
+  * #S3 settings
+  * CONNECTION=s3_conn
+  * BUCKET_NAME=bucket_name
+* Files used in this task: university_etl_dag.py, university_etl_functions.py, utils.py, db_connection.py, cfg.py, common_args.py and /sql.
 
 ## TASK ID: OT303-29 (Retry connection)
-* El archivo connection_db_dag.py contiene el dag de retry connection.
-* La función que se encarga de conectar con la base de datos se encuentra en db_connection.py
-* Archivos connection_db_dag.py, db_connection.py, cfg.py componen la task OT303-29.
+* File connection_db_dag.py: retry connection DAG.
+* File db_connection.py: contains the task DAG functons.
+* Files used in this task: connection_db_dag.py, db_connection.py, cfg.py.
 
 #
 # SPRINT II
 
 ## TASK ID: OT303-37 (Logs)
-* Carpeta logs contiene los .log generados al ejecutar los dag.
-* Archivo /utils/logger.py contiene la estructura del log utilizado.
-* Se actualizaron los dags y agregaron logs en las distintas task.
+* Folder /logs have the logs after run the DAGs.
+* File /utils/logger.py: logs implementation.
+* Dags updated with logs.
 
 ## TASK ID: OT303-45 (Extract)
-* Carpeta csv contiene los archivos .csv extraidos de la base de datos para las universidades Flores y Villa Maria.
+* Folder /csv have the information extracted in .csv format from the database for University Flores and University Villa Maria.
 * university_etl_dag.py (task extract), university_etl_functions.py (funcion extract implementada)
 
 ## TASK ID: OT303-61 (Transform Function)
-* En la carpeta extras se encuentra el jupyter notebook creado para transformar los datos, previo a implementarlo como scripts de python (ver para entender mejor esta task).
-* Carpeta clear_data contiene los archivos .txt generados de aplicar las transformaciones para las universidades Flores y Villa Maria.
-* university_etl_functions.py (funcion transform implementada)
-* transform.py (funcion que depura los datos usandos pandas)
+* Folder /extras have a jupyter notebook created to transform the data (spy on data).
+* Folder /clear_data have two files txt with the data transformed.
+* university_etl_functions.py: implements the transformation function in python.
+* transform.py: transform data using pandas.
 
 ## TASK ID: OT303-53 (Transform task)
-* En la carpeta clear_data se almacenan los archivos .txt generados al aplicar las transformaciones para ambas universidades.
-* university_etl_dag.py se implementa la tarea de procesamiento (transform).
+* university_etl_dag.py implements the DAG task for transform operation.
 
 #
 # SPRINT III
 ## TASK ID: OT303-69 y OT303-70 (Load task)
-* university_etl_dag.py se implementa la tarea de upload (load).
-* university_etl_functions.py (funcion load_data implementada)
+* university_etl_dag.py implements the task upload to S3.
+* university_etl_functions.py implements the function upload to S3.
 
 ## TASK ID: OT303-93 (Logs from file)
-* logger.py se crea el log a partir de un archivo de configuración.
-* logging.conf se declara la estructura del log, los handlers y formatters.
-* myHandler.py se crea un custom FileHandler para manejar los distintos parámetros.
+* logger.py creates a logger from a configuration file.
+* logging.conf: log, handlers and formatters.
+* myHandler.py: custom FileHandler for a rotative log.
 
 ## TASK ID: OT303-85 (Dynamic Dag)
-* Usando dag-factory: pip install dag-factory
-* No se modifica la lógica de procesamiento/negocio. 
-* Si no se quiere utilziar esta librería, el siguiente enlace contiene un tutorial de como implementar un DAG factory personalizado https://towardsdatascience.com/how-to-build-a-dag-factory-on-airflow-9a19ab84084c.
-* En config/config_dynamic_dag.yaml se implementa la estructura del dag.
-* dynamic_etl_dag.py crea el dag implementado.
+* Dynamic dags implementation using dag-factory: pip install dag-factory
+* Same business logic. 
+* Here another way to implement it: https://towardsdatascience.com/how-to-build-a-dag-factory-on-airflow-9a19ab84084c.
+* File config/config_dynamic_dag.yaml defines the Dag structure.
+* dynamic_etl_dag.py creates the dag.
 
-## TASK ID: OT303-101 (MapReduce Grupo A)
-* En la carpeta big_data se encuentran los archivos de esta tarea.
-* mapper_stdin.py y reducer_stdin.py son ejemplos de prueba ejecutados a traves de consola con standar input/output.
-* parsing.py es otro archivo de prueba para comprobar el funcionamiento de parsing de datos xml.
+## TASK ID: OT303-101 (MapReduce Group A)
+* Folder /big_data/map_reduce contains the files of this task.
+* mapper_stdin.py and reducer_stdin.py are test examples using standar input/output.
+* parsing.py another example file to test parsing xml data.
 * top_10_positive_tags.py: Top 10 tags with higher answer accepted.
 * avg_wrods_score.py: Relation between number of words and score in a post.
 * avg_answer_post.py: Average time answer in post.
 
 #
 # SPRINT IV
-## TASK ID: OT303-109 y OT303-117 (MapReduce Grupo A optimizaciones/hadoop)
-* Utilice la librería mrjob para implementar nuevamente las funciones de map reduce.
-* En la carpeta big_data/map_reduce se enceuntran los scripts anteriores y los nuevos implementados con mrjob.
-* Los scripts de mrjobs pueden correrse tanto localmente como en hadoop.
-* Para correr en hadoop, si se esta usando un docker container, instalar python sobre el mismo, y las dependencias. Copiar los scripts al container y los inputs.
-* Ejecutar: python3 name_script.py input > output
+## TASK ID: OT303-109 y OT303-117 (MapReduce Group A optimization/hadoop)
+* Implements mapReduce jobs using mrjob library.
+* Run in hadoop: run docker container, install python and the dependencies. Copy the scripts and the input data.
+* Local: python3 name_script.py input > output
 * Hadoop: pyton3 name_script.py input -r hadoop > output
 
 ## TASK ID: OT303:125 (Unit Test)
-* Utilice PyTest para crear test unitarios.
-* Cada funcion de los scripts mrjobs_.py tiene test unitarios.
-* Carpeta big_data/tests.
+* PyTest.
+* Each function from mrjobs_.py have tests.
+* Folder big_data/tests.
 
-## TASK ID: OT303:133 (Documentar Test)
-* Carpeta big_data/tests.
-* Todas las funciones desarrolladas a lo largo de esta certificación fueron documentadas utilizando docstrings.
-* Si se utiliza Visual Studio: (https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring)
-
-#
-# Aclaración:
-* Para ejecutar los DAGs, dentro de la carpeta /airflow/dags/ copiar los archivos usados o cambiar las rutas en los scripts.py.
+## TASK ID: OT303:133 (Documentation)
+* All features in this repository were documented using docstrings.
+* [Visual Studio Plugin](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring)
